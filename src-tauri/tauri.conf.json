@@ -1,0 +1,28 @@
+{
+  "identifier": "com.alpha.splash",
+  "productName": "ALPHA Splash",
+  "version": "0.1.0",
+  "build": {
+    "beforeBuildCommand": "",
+    "beforeDevCommand": "",
+    "frontendDist": "../src"
+  },
+  "app": {
+  "withGlobalTauri": true,
+    "security": {
+      "csp": null
+    },
+    "windows": [
+      {
+        "fullscreen": false,
+        "height": 600,
+        "resizable": false,
+        "title": "ALPHA Splash",
+        "width": 800,
+        "center": true,
+        "decorations": false,
+        "transparent": false
+      }
+    ]
+  }
+}

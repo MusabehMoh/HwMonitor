@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPHA Splash</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="dashboard-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <h1 class="main-text">HIVEMIND</h1>
+            </div>
+            <div class="system-time" id="system-time">--:--:--</div>
+        </header>
+
+        <!-- Main Dashboard Grid -->
+        <main class="dashboard-grid">
+            <!-- System Overview -->
+            <section class="card overview-card">
+                <h2 class="card-title">System Overview</h2>
+                <div class="overview-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">CPU</span>
+                        <span class="stat-value" id="cpu-usage">--</span>
+                        <span class="stat-unit">%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Memory</span>
+                        <span class="stat-value" id="memory-usage">--</span>
+                        <span class="stat-unit">%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Temp</span>
+                        <span class="stat-value" id="cpu-temp">--</span>
+                        <span class="stat-unit">°C</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Uptime</span>
+                        <span class="stat-value" id="uptime">--</span>
+                        <span class="stat-unit">H</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Hardware Specs -->
+            <section class="card specs-card">
+                <h2 class="card-title">Hardware Specifications</h2>
+                <div class="specs-list">
+                    <div class="spec-item">
+                        <span class="spec-label">Processor</span>
+                        <span class="spec-value" id="cpu-model">Loading...</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Architecture</span>
+                        <span class="spec-value" id="cpu-arch">Loading...</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Cores</span>
+                        <span class="spec-value" id="cpu-cores">Loading...</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Total Memory</span>
+                        <span class="spec-value" id="total-memory">Loading...</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">OS</span>
+                        <span class="spec-value" id="os-info">Loading...</span>
+                    </div>
+                    <div class="spec-item">
+                        <span class="spec-label">Hostname</span>
+                        <span class="spec-value" id="hostname">Loading...</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Chart -->
+            <section class="card chart-card">
+                <h2 class="card-title">Performance Monitor</h2>
+                <div class="chart-container">
+                    <canvas id="performance-chart" width="400" height="200"></canvas>
+                </div>
+            </section>
+
+            <!-- Memory Details -->
+            <section class="card memory-card">
+                <h2 class="card-title">Memory Usage</h2>
+                <div class="memory-info">
+                    <div class="memory-bar">
+                        <div class="memory-fill" id="memory-fill"></div>
+                    </div>
+                    <div class="memory-details">
+                        <span id="used-memory">--</span> / <span id="total-memory-display">--</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- System Status -->
+            <section class="card status-card">
+                <h2 class="card-title">System Status</h2>
+                <div class="status-items">
+                    <div class="status-item">
+                        <div class="status-indicator good"></div>
+                        <span>CPU Normal</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator good"></div>
+                        <span>Memory OK</span>
+                    </div>
+                    <div class="status-item">
+                        <div class="status-indicator good"></div>
+                        <span>Temperature OK</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Performance Metrics -->
+            <section class="card metrics-card">
+                <h2 class="card-title">Real-time Metrics</h2>
+                <div class="metrics-grid">
+                    <div class="metric">
+                        <span class="metric-label">FPS</span>
+                        <span class="metric-value" id="fps-counter">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Processes</span>
+                        <span class="metric-value" id="process-count">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Load Avg</span>
+                        <span class="metric-value" id="load-avg">--</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Boot Time</span>
+                        <span class="metric-value" id="boot-time">--</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    <script type="module" src="/script.js"></script>
+</body>
+</html>

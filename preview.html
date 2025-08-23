@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ALPHA Splash - Browser Preview</title>
+    <style>
+        @font-face {
+            font-family: 'Inversionz';
+            src: url('./src/assets/fonts/Inversionz.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inversionz', Arial, sans-serif;
+            background-color: #000;
+            color: white;
+            overflow: hidden;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        .splash-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+        }
+
+        .alpha-text {
+            font-family: 'Inversionz', Arial, sans-serif;
+            font-size: 5rem;
+            font-weight: normal;
+            letter-spacing: 0.5em;
+            text-align: center;
+            color: white;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            
+            /* Animation properties */
+            opacity: 0;
+            transform: scale(0.8);
+            animation: fadeInScale 3s ease-in-out forwards;
+        }
+
+        @keyframes fadeInScale {
+            0% {
+                opacity: 0;
+                transform: scale(0.8) translateY(20px);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.05) translateY(-5px);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        /* For smaller screens like your 5-inch OLED */
+        @media (max-width: 600px) {
+            .alpha-text {
+                font-size: 3rem;
+                letter-spacing: 0.3em;
+            }
+        }
+
+        @media (max-height: 400px) {
+            .alpha-text {
+                font-size: 2.5rem;
+            }
+        }
+
+        /* Touch-friendly for touchscreen */
+        .splash-container {
+            touch-action: none;
+            user-select: none;
+        }
+
+        .preview-note {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: rgba(0,0,0,0.7);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 12px;
+            font-family: Arial, sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="preview-note">Browser Preview - This will be a borderless Tauri window</div>
+    <div class="splash-container">
+        <h1 class="alpha-text">ALPHA</h1>
+    </div>
+    <script>
+        // Simple script for the ALPHA splash screen
+        document.addEventListener('DOMContentLoaded', function() {
+            const alphaText = document.querySelector('.alpha-text');
+            
+            // Add event listener for animation end
+            alphaText.addEventListener('animationend', function() {
+                console.log('Fade animation completed');
+                // You can add more functionality here, like navigating to main app
+            });
+            
+            // Optional: Add touch/click interaction for mobile
+            document.addEventListener('click', function() {
+                // You could transition to main app here
+                console.log('Splash screen clicked');
+            });
+            
+            // Log when the app starts
+            console.log('ALPHA Splash Screen loaded');
+        });
+    </script>
+</body>
+</html>
