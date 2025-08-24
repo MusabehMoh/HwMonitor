@@ -36,13 +36,17 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
-        "resizable": false,
-        "title": "ALPHA Splash",
-        "width": 800,
+        "height": 900,
+        "resizable": true,
+        "title": "ALPHA Hardware Monitor",
+        "width": 1400,
         "center": true,
-        "decorations": false,
-        "transparent": false
+        "decorations": true,
+        "transparent": false,
+        "minHeight": 600,
+        "minWidth": 800,
+        "maxHeight": 1080,
+        "maxWidth": 1920
       }
     ]
   }
