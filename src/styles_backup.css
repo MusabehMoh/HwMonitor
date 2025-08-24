@@ -1,4 +1,3 @@
-html, body { height: 100%; overflow: hidden; }
 @font-face {
     font-family: 'Inversionz';
     src: url('./assets/fonts/Inversionz.ttf') format('truetype');
@@ -28,7 +27,7 @@ html, body { height: 100%; overflow: hidden; }
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
     background: #ffffff;
-    color: #0b0b0b;
+    color: #000000;
     overflow-x: hidden;
     height: 100vh;
     width: 100vw;
@@ -37,80 +36,71 @@ body {
     -ms-overflow-style: none; /* IE and Edge */
 }
 
-.app-window { max-width: 880px; margin: 28px auto; padding: 0; border-radius: 22px; background: transparent; box-shadow: none; backdrop-filter: none; }
-
 .dashboard-container {
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     opacity: 0;
-    animation: fadeIn 0.6s ease-out forwards;
+    animation: fadeIn 1s ease-out forwards;
 }
 
 /* Header */
-.header { display: grid; grid-template-columns: 1fr 120px; align-items: center; padding: 24px 16px; }
-.window-title { text-align: left; font-weight: 600; letter-spacing: 2px; color: #0f1115; }
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 40px;
+    border-bottom: 1px solid #e0e0e0;
+    background: #ffffff;
+}
 
-.logo .main-text { display: none; }
+.logo .main-text {
+    font-family: 'Capitol City', Arial, sans-serif;
+    font-size: 2rem;
+    font-weight: 400;
+    color: #000000;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+}
 
-.system-time { text-align: right; color: #0f1115; opacity: 0.85; font-weight: 500; }
+.system-time {
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    font-size: 1rem;
+    color: #666666;
+    font-weight: 400;
+}
 
 /* Dashboard Grid */
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-        "summary summary"
-        "chart specs";
-    gap: 18px;
-    padding: 16px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1px;
+    padding: 0;
+    flex: 1;
+    background: #f5f5f5;
 }
-.summary-panel { grid-area: summary; padding: 16px; }
-.summary-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-}
-.summary-item {
-    background: rgba(255,255,255,0.7);
-    border: 1px solid rgba(255,255,255,0.5);
-    border-radius: 16px;
-    padding: 16px 12px;
-    display: grid;
-    grid-template-rows: auto auto auto;
-    align-items: center;
-    text-align: center;
-}
-.summary-icon { display: none; }
-.summary-value { font-size: 2.2rem; font-weight: 700; color: #0f1115; line-height: 1; }
-.summary-unit { font-size: 1.1rem; font-weight: 600; color: rgba(0,0,0,0.45); margin-left: 4px; }
-.summary-label { font-size: 0.8rem; color: rgba(0,0,0,0.45); margin-top: 6px; font-weight: 600; }
-
-:root { --panelHeight: 260px; }
-.chart-card { grid-area: chart; padding: 14px !important; height: var(--panelHeight); display: flex; }
-.specs-card { grid-area: specs; height: var(--panelHeight); display: flex; flex-direction: column; }
-.specs-card .specs-list { flex: 1 1 auto; overflow: hidden; }
-.specs-card .memory-usage-block { margin-top: 8px; }
-.specs-card { grid-area: specs; }
-
-.memory-usage-block { margin-top: 18px; }
-.memory-title { font-size: 0.75rem; color: rgba(0,0,0,0.45); font-weight: 600; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .06em; }
-.memory-details { margin-bottom: 8px; color: rgba(0,0,0,0.55); }
 
 /* Card Styles */
 .card {
-    background: rgba(255,255,255,0.55);
-    border: 1px solid rgba(255,255,255,0.35);
-    padding: 18px 18px 18px 18px;
-    border-radius: 16px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    background: #ffffff;
+    border: none;
+    padding: 30px;
+    transition: all 0.2s ease;
     position: relative;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.25) inset, 0 8px 24px rgba(0,0,0,0.08);
 }
 
-.card:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(0,0,0,0.12); }
+.card:hover {
+    background: #f8f8f8;
+}
 
-.card-title { font-size: 0.75rem; font-weight: 600; color: rgba(0,0,0,0.45); margin-bottom: 14px; letter-spacing: 0.08em; }
+.card-title {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #999999;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
 
 /* Overview Card */
 .overview-stats {
@@ -124,11 +114,29 @@ body {
     flex-direction: column;
 }
 
-.stat-label { font-size: 0.68rem; color: rgba(0,0,0,0.45); text-transform: none; letter-spacing: 0.02em; margin-bottom: 6px; font-weight: 600; }
+.stat-label {
+    font-size: 0.7rem;
+    color: #999999;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
 
-.stat-value { font-size: 2.6rem; font-weight: 600; color: #0f1115; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto; line-height: 1; }
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: 300;
+    color: #000000;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    line-height: 1;
+}
 
-.stat-unit { font-size: 0.8rem; color: rgba(0,0,0,0.35); margin-top: 2px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; }
+.stat-unit {
+    font-size: 0.7rem;
+    color: #cccccc;
+    margin-top: 5px;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+}
 
 /* Hardware Specs */
 .specs-list {
@@ -143,14 +151,48 @@ body {
     align-items: center;
 }
 
-.spec-label { font-size: 0.82rem; color: rgba(0,0,0,0.45); font-weight: 500; }
+.spec-label {
+    font-size: 0.8rem;
+    color: #999999;
+    font-weight: 400;
+}
 
-.spec-value { font-size: 0.82rem; color: #0f1115; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; text-align: right; font-weight: 500; }
+.spec-value {
+    font-size: 0.8rem;
+    color: #000000;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    text-align: right;
+    font-weight: 400;
+}
 
 /* Chart Card */
-.chart-container { position: relative; width: 100%; height: 100%; background: #15181c; border-radius: 12px; overflow: hidden; border: 1px solid rgba(0,0,0,0.15); }
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #333;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
 
-.chart-container canvas { position: absolute; inset: 0; width: 100% !important; height: 100% !important; display: block; border-radius: 12px; }
+.chart-card {
+    padding: 0 !important;
+    height: 200px;
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);
+    border: 1px solid #333;
+}
+
+.chart-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+    border-radius: 8px;
+    display: block;
+}
 
 /* Memory Card */
 .memory-bar {
@@ -286,7 +328,3 @@ body {
     touch-action: none;
     user-select: none;
 }
-
-/* Disable clicks globally as requested */
-.app-window { pointer-events: none; }
-.app-window * { pointer-events: none; }

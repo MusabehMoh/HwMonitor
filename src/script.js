@@ -75,7 +75,7 @@ class DashboardManager {
 
     async loadHardwareSpecs() {
         console.log('Loading hardware specs...');
-        if (!this.tauriInvoke) {
+    if (!this.tauriInvoke) {
             console.log('Tauri not available, showing placeholder data');
             this.cpuModelElement.textContent = 'Tauri Not Available';
             this.cpuArchElement.textContent = 'BROWSER';
@@ -128,9 +128,9 @@ class DashboardManager {
                 this.totalMemoryDisplayElement.textContent = '--';
             }
             
-            this.memoryFill.style.width = '0%';
-            this.processCountElement.textContent = '--';
-            this.loadAvgElement.textContent = '--';
+            if (this.memoryFill) this.memoryFill.style.width = '0%';
+            if (this.processCountElement) this.processCountElement.textContent = '--';
+            if (this.loadAvgElement) this.loadAvgElement.textContent = '--';
             return;
         }
 
@@ -153,7 +153,7 @@ class DashboardManager {
             this.applyColorCoding(this.memoryElement, memoryUsage, 75, 90);
 
             // Update memory bar and details
-            this.memoryFill.style.width = `${memoryUsage}%`;
+            if (this.memoryFill) this.memoryFill.style.width = `${memoryUsage}%`;
             
             // Format and display memory usage
             const usedMemoryFormatted = this.formatBytes(systemInfo.used_memory);
@@ -181,8 +181,11 @@ class DashboardManager {
             this.uptimeElement.textContent = uptime;
 
             // Update additional metrics
-            this.processCountElement.textContent = '--';
-            this.loadAvgElement.textContent = '--';
+            if (this.processCountElement) this.processCountElement.textContent = '--';
+            if (this.loadAvgElement) this.loadAvgElement.textContent = '--';
+
+            // Update chart with new data
+            this.updateChartData(cpuUsage, memoryUsage, tempInfo?.temperature)
 
         } catch (error) {
             console.error('Failed to get system info:', error);
@@ -199,7 +202,7 @@ class DashboardManager {
                 this.totalMemoryDisplayElement.textContent = '--';
             }
             
-            this.memoryFill.style.width = '0%';
+            if (this.memoryFill) this.memoryFill.style.width = '0%';
         }
     }
 
@@ -268,52 +271,198 @@ class DashboardManager {
     }
 
     initializeChart() {
-        // Clean, minimal performance chart
         const canvas = document.getElementById('performance-chart');
-        if (canvas) {
-            const ctx = canvas.getContext('2d');
+        if (!canvas) return;
+        
+        this.ctx = canvas.getContext('2d');
+        this.chartData = {
+            cpu: [],
+            memory: [],
+            temperature: []
+        };
+        this.maxDataPoints = 50; // Show last 50 data points
+        this.animationSpeed = 0.1; // Smooth animation factor
+        
+        // Force canvas to fill entire container
+        const container = canvas.parentElement;
+        canvas.style.position = 'absolute';
+        canvas.style.top = '0';
+        canvas.style.left = '0';
+        canvas.style.width = '100%';
+        canvas.style.height = '100%';
+        
+        // Set actual canvas dimensions for crisp rendering
+        const rect = container.getBoundingClientRect();
+        canvas.width = rect.width * 2;
+        canvas.height = rect.height * 2;
+        this.ctx.scale(2, 2);
+        
+        this.drawChart();
+    }
+
+    updateChartData(cpuUsage, memoryUsage, temperature) {
+        // Add new data points
+        this.chartData.cpu.push(cpuUsage);
+        this.chartData.memory.push(memoryUsage);
+        this.chartData.temperature.push(temperature || 0);
+        
+        // Remove old data points to maintain smooth scrolling
+        if (this.chartData.cpu.length > this.maxDataPoints) {
+            this.chartData.cpu.shift();
+            this.chartData.memory.shift();
+            this.chartData.temperature.shift();
+        }
+        
+        // Redraw chart with smooth animation
+        this.drawChart();
+    }
+
+    drawChart() {
+        if (!this.ctx) return;
+        
+        const canvas = this.ctx.canvas;
+        const width = canvas.width / 2;
+        const height = canvas.height / 2;
+        const padding = 15; // Minimal padding for edge-to-edge appearance
+        const chartWidth = width - padding * 2;
+        const chartHeight = height - padding * 2;
+        
+        // Clear canvas with gradient background matching HIVEMIND theme
+        const gradient = this.ctx.createLinearGradient(0, 0, width, height);
+        gradient.addColorStop(0, '#1e1e1e');
+        gradient.addColorStop(1, '#2a2a2a');
+        this.ctx.fillStyle = gradient;
+        this.ctx.fillRect(0, 0, width, height);
+        
+        // Draw grid lines
+        this.drawGrid(padding, chartWidth, chartHeight);
+        
+        // Draw data lines with HIVEMIND theme colors
+        this.drawLine(this.chartData.cpu, '#00ff88', 'CPU', padding, chartWidth, chartHeight);
+        this.drawLine(this.chartData.memory, '#ff6b35', 'Memory', padding, chartWidth, chartHeight);
+        
+        if (this.chartData.temperature.some(t => t > 0)) {
+            // Scale temperature (0-100°C) to 0-100% for display
+            const tempScaled = this.chartData.temperature.map(t => (t / 100) * 100);
+            this.drawLine(tempScaled, '#3498db', 'Temp', padding, chartWidth, chartHeight);
+        }
+        
+        // Draw legend in top-right corner
+        this.drawLegend(width - 70, 5);
+        
+        // Draw current values in bottom-left corner
+        this.drawCurrentValues(5, height - 35);
+    }
+
+    drawGrid(padding, chartWidth, chartHeight) {
+        this.ctx.strokeStyle = '#404040';
+        this.ctx.lineWidth = 1;
+        this.ctx.globalAlpha = 0.3;
+        
+        // Horizontal grid lines extend to edges
+        for (let i = 0; i <= 4; i++) {
+            const y = padding + (i * chartHeight / 4);
+            this.ctx.beginPath();
+            this.ctx.moveTo(0, y); // Start from left edge
+            this.ctx.lineTo(this.ctx.canvas.width / 2, y); // Go to right edge
+            this.ctx.stroke();
             
-            // Clear canvas with white background
-            ctx.fillStyle = '#ffffff';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw minimal grid lines
-            ctx.strokeStyle = '#f0f0f0';
-            ctx.lineWidth = 1;
-            
-            // Horizontal grid lines
-            for (let y = 0; y <= canvas.height; y += 40) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(canvas.width, y);
-                ctx.stroke();
+            // Y-axis labels - positioned at very edge with theme colors
+            if (i < 4) { // Don't draw label at top
+                this.ctx.fillStyle = '#888';
+                this.ctx.font = '9px SF Mono, monospace';
+                this.ctx.fillText(`${100 - i * 25}%`, 1, y + 3);
             }
+        }
+        
+        // Vertical grid lines extend to edges
+        const timeIntervals = 15;
+        for (let i = 0; i <= timeIntervals; i++) {
+            const x = (i * (this.ctx.canvas.width / 2) / timeIntervals);
+            this.ctx.beginPath();
+            this.ctx.moveTo(x, 0); // Start from top edge
+            this.ctx.lineTo(x, this.ctx.canvas.height / 2); // Go to bottom edge
+            this.ctx.stroke();
+        }
+        
+        this.ctx.globalAlpha = 1;
+    }
+
+    drawLine(data, color, label, padding, chartWidth, chartHeight) {
+        if (data.length < 2) return;
+        
+        this.ctx.strokeStyle = color;
+        this.ctx.lineWidth = 2;
+        this.ctx.globalAlpha = 0.9;
+        
+        this.ctx.beginPath();
+        
+        for (let i = 0; i < data.length; i++) {
+            const x = padding + (i / (this.maxDataPoints - 1)) * chartWidth;
+            const y = padding + chartHeight - (data[i] / 100) * chartHeight;
             
-            // Vertical grid lines
-            for (let x = 0; x <= canvas.width; x += 50) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, canvas.height);
-                ctx.stroke();
+            if (i === 0) {
+                this.ctx.moveTo(x, y);
+            } else {
+                this.ctx.lineTo(x, y);
             }
+        }
+        
+        this.ctx.stroke();
+        
+        // Add glow effect
+        this.ctx.shadowColor = color;
+        this.ctx.shadowBlur = 3;
+        this.ctx.stroke();
+        this.ctx.shadowBlur = 0;
+        
+        this.ctx.globalAlpha = 1;
+    }
+
+    drawLegend(x, y) {
+        const legends = [
+            { color: '#00ff88', label: 'CPU' },
+            { color: '#ff6b35', label: 'Memory' },
+            { color: '#3498db', label: 'Temp' }
+        ];
+        
+        this.ctx.font = '10px SF Mono, monospace';
+        
+        legends.forEach((legend, index) => {
+            const legendY = y + index * 18;
             
-            // Draw a simple black line chart
-            ctx.strokeStyle = '#000000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height / 2);
+            // Color indicator with glow
+            this.ctx.shadowColor = legend.color;
+            this.ctx.shadowBlur = 2;
+            this.ctx.fillStyle = legend.color;
+            this.ctx.fillRect(x, legendY, 12, 2);
+            this.ctx.shadowBlur = 0;
             
-            // Draw a sample performance line
-            for (let x = 0; x < canvas.width; x += 10) {
-                const y = canvas.height / 2 + Math.sin(x * 0.02) * 30 + Math.random() * 20 - 10;
-                ctx.lineTo(x, Math.max(10, Math.min(canvas.height - 10, y)));
-            }
-            ctx.stroke();
-            
-            // Add minimal text label
-            ctx.fillStyle = '#999999';
-            ctx.font = '12px SF Mono, monospace';
-            ctx.fillText('PERFORMANCE', 15, 25);
+            // Label with theme color
+            this.ctx.fillStyle = '#ccc';
+            this.ctx.fillText(legend.label, x + 16, legendY + 4);
+        });
+    }
+
+    drawCurrentValues(x, y) {
+        if (this.chartData.cpu.length === 0) return;
+        
+        const currentCpu = this.chartData.cpu[this.chartData.cpu.length - 1] || 0;
+        const currentMemory = this.chartData.memory[this.chartData.memory.length - 1] || 0;
+        const currentTemp = this.chartData.temperature[this.chartData.temperature.length - 1] || 0;
+        
+        this.ctx.font = '10px SF Mono, monospace';
+        this.ctx.fillStyle = '#ccc';
+        
+        // Add subtle background for better readability
+        this.ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+        this.ctx.fillRect(x - 2, y - 12, 80, currentTemp > 0 ? 38 : 26);
+        
+        this.ctx.fillStyle = '#ccc';
+        this.ctx.fillText(`CPU: ${currentCpu.toFixed(1)}%`, x, y);
+        this.ctx.fillText(`MEM: ${currentMemory.toFixed(1)}%`, x, y + 12);
+        if (currentTemp > 0) {
+            this.ctx.fillText(`TEMP: ${currentTemp.toFixed(1)}°C`, x, y + 24);
         }
     }
 }
