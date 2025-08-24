@@ -77,6 +77,38 @@
     transform: translateY(-1px);
 }
 
+/* FPS Counter */
+.fps-counter {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: rgba(255, 255, 255, 0.9);
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    backdrop-filter: blur(10px);
+    opacity: 0.8;
+    min-width: 60px;
+    text-align: center;
+}
+
+.fps-good {
+    color: #4ade80 !important;
+}
+
+.fps-medium {
+    color: #fbbf24 !important;
+}
+
+.fps-bad {
+    color: #f87171 !important;
+}
+
 /* Countdown Card */
 .countdown-card {
     background: rgba(255, 255, 255, 0.1);
@@ -137,6 +169,14 @@
         opacity: 0.6;
     }
     
+    .fps-counter {
+        top: 15px;
+        right: 15px;
+        padding: 4px 8px;
+        font-size: 0.7rem;
+        min-width: 50px;
+    }
+    
     .countdown-card {
         padding: 60px 40px;
         margin: 20px;
@@ -160,6 +200,14 @@
         padding: 5px 8px;
         font-size: 0.75rem;
         opacity: 0.5;
+    }
+    
+    .fps-counter {
+        top: 12px;
+        right: 12px;
+        padding: 3px 6px;
+        font-size: 0.65rem;
+        min-width: 45px;
     }
     
     .countdown-card {

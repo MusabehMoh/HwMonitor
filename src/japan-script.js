@@ -3,6 +3,7 @@
 class JapanCountdown {
     constructor() {
         this.initCountdown();
+        this.initFPSCounter();
     }
 
     initCountdown() {
@@ -31,6 +32,43 @@ class JapanCountdown {
         
         updateCountdown();
         setInterval(updateCountdown, 1000 * 60 * 60); // Update every hour
+    }
+
+    initFPSCounter() {
+        let frames = 0;
+        let lastTime = performance.now();
+        let fps = 0;
+        
+        const fpsElement = document.getElementById('fps-counter');
+        
+        const updateFPS = () => {
+            frames++;
+            const currentTime = performance.now();
+            
+            if (currentTime - lastTime >= 1000) {
+                fps = Math.round((frames * 1000) / (currentTime - lastTime));
+                
+                // Update display
+                fpsElement.textContent = `${fps} FPS`;
+                
+                // Color coding based on performance
+                fpsElement.className = 'fps-counter';
+                if (fps >= 50) {
+                    fpsElement.classList.add('fps-good');
+                } else if (fps >= 30) {
+                    fpsElement.classList.add('fps-medium');
+                } else {
+                    fpsElement.classList.add('fps-bad');
+                }
+                
+                frames = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(updateFPS);
+        };
+        
+        updateFPS();
     }
 }
 
