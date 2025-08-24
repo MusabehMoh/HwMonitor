@@ -57,7 +57,7 @@ body {
 /* Header */
 .header { 
     display: grid; 
-    grid-template-columns: 1fr 160px; 
+    grid-template-columns: 1fr auto; 
     align-items: center; 
     padding: 32px 24px; 
 }
@@ -67,6 +67,32 @@ body {
     letter-spacing: 2px; 
     color: #0f1115; 
     font-size: 1.2rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.japan-button {
+    background: linear-gradient(135deg, #ff6b6b, #ff8e53);
+    border: none;
+    color: white;
+    padding: 10px 16px;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(255, 107, 107, 0.3);
+    pointer-events: auto;
+}
+
+.japan-button:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255, 107, 107, 0.4);
+    background: linear-gradient(135deg, #ff5252, #ff7043);
 }
 
 .logo .main-text { display: none; }
@@ -380,8 +406,19 @@ body {
 @media (max-width: 768px) {
     .header {
         padding: 20px 25px;
-        flex-direction: column;
+        grid-template-columns: 1fr;
         gap: 15px;
+        text-align: center;
+    }
+    
+    .header-actions {
+        justify-content: center;
+        gap: 12px;
+    }
+    
+    .japan-button {
+        padding: 8px 12px;
+        font-size: 0.8rem;
     }
     
     .logo .main-text {
@@ -445,6 +482,21 @@ body {
     user-select: none;
 }
 
-/* Disable clicks globally as requested */
+/* Enable clicks for interactive elements */
+.japan-button {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+
+.back-button {
+    pointer-events: auto !important;
+    cursor: pointer;
+}
+
+/* Disable clicks globally as requested, but allow specific elements */
 .app-window { pointer-events: none; }
 .app-window * { pointer-events: none; }
+
+/* Re-enable specific interactive elements */
+.app-window .japan-button { pointer-events: auto !important; }
+.app-window button { pointer-events: auto !important; }

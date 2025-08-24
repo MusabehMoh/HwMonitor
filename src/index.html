@@ -12,7 +12,10 @@
         <!-- Header -->
     <header class="header">
             <div class="window-title">HIVEMIND</div>
-            <div class="system-time" id="system-time">--:--</div>
+            <div class="header-actions">
+                <button class="japan-button" onclick="window.goToJapan()" style="pointer-events: auto !important;">🇯🇵 Japan Trip</button>
+                <div class="system-time" id="system-time">--:--</div>
+            </div>
         </header>
 
         <!-- Main Dashboard Grid -->
@@ -88,5 +91,12 @@
             </div>
         </div>
     <script type="module" src="/script.js"></script>
+    <script>
+        // Ensure Japan navigation function is available
+        function goToJapan() {
+            window.location.href = 'japan.html';
+        }
+        window.goToJapan = goToJapan;
+    </script>
 </body>
 </html>

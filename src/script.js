@@ -538,3 +538,11 @@ style.textContent = `
     }
 `;
 document.head.appendChild(style);
+
+// Navigation function for Japan page
+function goToJapan() {
+    window.location.href = 'japan.html';
+}
+
+// Make function globally accessible
+window.goToJapan = goToJapan;
